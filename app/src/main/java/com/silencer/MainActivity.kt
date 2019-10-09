@@ -1,6 +1,7 @@
 package com.silencer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Engine.silence(applicationContext)
+        Engine.silence(this)
     }
 
     private fun checkKeyCombination(): Boolean {
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d("Silencer", "$keyCode")
         when (keyCode) {
             KeyEvent.KEYCODE_MENU -> {
                 keyPressState = keyPressState.or(KEYSTATE_MENU)
