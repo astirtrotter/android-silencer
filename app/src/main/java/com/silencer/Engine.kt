@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
 import android.util.Log
+import android.view.WindowManager
 
 object Engine {
     private val TAG = "SilencerEngine"
@@ -22,13 +23,13 @@ object Engine {
         mute(activity)
     }
 
-    fun unsilence(context: Context) {
-        turnOnScreen(context)
-        unmute(context)
+    fun unsilence(activity: Activity) {
+        turnOnScreen(activity)
+        unmute(activity)
     }
 
 
-    @SuppressLint("InvalidWakeLockTag")
+    @SuppressLint("InvalidWakeLockTag", "WakelockTimeout")
     private fun turnOffScreen(activity: Activity) {
         Log.d(TAG, "turnOff")
 
@@ -47,7 +48,7 @@ object Engine {
         }
     }
 
-    private fun turnOnScreen(context: Context) {
+    private fun turnOnScreen(activity: Activity) {
         Log.d(TAG, "turnOn")
 
         if (screenWakeLock?.isHeld ?: false) {
@@ -55,14 +56,20 @@ object Engine {
             screenWakeLock = null
         }
 
+        activity.window.apply {
+            addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+            addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        }
+
         isScreenTurnedOn = true
     }
 
-    private fun mute(context: Context) {
+    private fun mute(activity: Activity) {
         Log.d(TAG, "mute")
     }
 
-    private fun unmute(context: Context) {
+    private fun unmute(activity: Activity) {
         Log.d(TAG, "unmute")
     }
 }

@@ -32,14 +32,14 @@ class MainActivity : AppCompatActivity() {
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
                     keyPressState = keyPressState.or(KEYSTATE_VOLDN)
                     if (checkKeyCombination()) {
-                        Engine.unsilence(applicationContext)
+                        Engine.unsilence(this)
                         return true
                     }
                 }
                 KeyEvent.KEYCODE_VOLUME_UP -> {
                     keyPressState = keyPressState.or(KEYSTATE_VOLUP)
                     if (checkKeyCombination()) {
-                        Engine.unsilence(applicationContext)
+                        Engine.unsilence(this)
                         return true
                     }
                 }
