@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var keyPressState = 0
+    private var isInitial = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,13 +74,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        if (Engine.isSilenced) {
+        if (!isInitial && Engine.isSilenced) {
             Engine.isSilenced = false
 
             // time limit
             Handler().postDelayed({
                 Engine.silence(this@MainActivity)
             }, 2000)
+        } else if (isInitial) {
+            isInitial = false
         }
         super.onResume()
     }
