@@ -1,6 +1,7 @@
 package com.silencer
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
@@ -72,8 +73,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        Engine.isSilenced = false
-        Log.d("Silencer", "onResume")
+        if (Engine.isSilenced) {
+            Engine.isSilenced = false
+
+            // time limit
+            Handler().postDelayed({
+                Engine.silence(this@MainActivity)
+            }, 2000)
+        }
         super.onResume()
     }
 }

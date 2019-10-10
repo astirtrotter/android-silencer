@@ -6,6 +6,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.os.PowerManager
 import android.util.Log
 import android.view.WindowManager
@@ -21,6 +22,7 @@ object Engine {
             log("isSilenced: $field -> $value")
             field = value
         }
+    private var ringerMode: Int = AudioManager.RINGER_MODE_SILENT
 
     private var screenWakeLock: PowerManager.WakeLock? = null
 
@@ -32,6 +34,7 @@ object Engine {
     fun unsilence(activity: Activity) {
         turnOnScreen(activity)
         unmute(activity)
+        activity.finish()
     }
 
 
@@ -73,9 +76,18 @@ object Engine {
 
     private fun mute(activity: Activity) {
         log("mute")
+
+        val audioManager = activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+//        audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL)
+//        audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, 0, AudioManager.FLAG_SHOW_UI)
+        ringerMode = audioManager.ringerMode
+        audioManager.ringerMode = AudioManager.RINGER_MODE_SILENT
     }
 
     private fun unmute(activity: Activity) {
         log("unmute")
+
+        val audioManager = activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        audioManager.ringerMode = ringerMode
     }
 }
