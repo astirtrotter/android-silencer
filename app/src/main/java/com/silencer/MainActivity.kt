@@ -1,6 +1,7 @@
 package com.silencer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 
@@ -62,5 +63,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         return !Engine.isScreenTurnedOn || super.onKeyUp(keyCode, event)
+    }
+
+    override fun onResume() {
+        Log.d("Silencer", "onResume")
+        super.onResume()
     }
 }

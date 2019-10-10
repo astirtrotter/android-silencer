@@ -14,7 +14,13 @@ object Engine {
     private val TAG = "SilencerEngine"
     private val ADMIN_RECEIVER_REQUEST_CODE = 101
 
+    private fun log(msg: String) = Log.d(TAG, msg)
+
     var isScreenTurnedOn = true
+        set(value) {
+            log("isScreenTurnedOn: $field -> $value")
+            field = value
+        }
 
     private var screenWakeLock: PowerManager.WakeLock? = null
 
@@ -31,7 +37,7 @@ object Engine {
 
     @SuppressLint("InvalidWakeLockTag", "WakelockTimeout")
     private fun turnOffScreen(activity: Activity) {
-        Log.d(TAG, "turnOff")
+        log("turnOff")
 
         val policyManager = activity.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val componentName = ComponentName(activity, SilencerAdminReceiver::class.java)
@@ -49,7 +55,7 @@ object Engine {
     }
 
     private fun turnOnScreen(activity: Activity) {
-        Log.d(TAG, "turnOn")
+        log("turnOn")
 
         if (screenWakeLock?.isHeld ?: false) {
             screenWakeLock!!.release()
@@ -66,10 +72,10 @@ object Engine {
     }
 
     private fun mute(activity: Activity) {
-        Log.d(TAG, "mute")
+        log("mute")
     }
 
     private fun unmute(activity: Activity) {
-        Log.d(TAG, "unmute")
+        log("unmute")
     }
 }
