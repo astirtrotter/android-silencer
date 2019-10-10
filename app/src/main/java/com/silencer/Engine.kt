@@ -24,27 +24,27 @@ object Engine {
 
 //    private var screenWakeLock: PowerManager.WakeLock? = null
 
-    fun silence(activity: Activity) {
-        if (turnOffScreen(activity)) {
-            mute(activity)
+    fun silence(context: Context) {
+        if (turnOffScreen(context)) {
+            mute(context)
         }
     }
 
-    fun unsilence(activity: Activity) {
-//        turnOnScreen(activity)
-        unmute(activity)
-        activity.finish()
+    fun unsilence(context: Context) {
+//        turnOnScreen(context)
+        unmute(context)
+        (context as Activity).finish()
     }
 
 
     @SuppressLint("InvalidWakeLockTag", "WakelockTimeout")
-    private fun turnOffScreen(activity: Activity): Boolean {
+    private fun turnOffScreen(context: Context): Boolean {
         log("turnOff")
 
-        val policyManager = activity.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        val componentName = ComponentName(activity, SilencerAdminReceiver::class.java)
+        val policyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        val componentName = ComponentName(context, SilencerAdminReceiver::class.java)
         if (policyManager.isAdminActive(componentName)) {
-//            val pm = activity.getSystemService(Context.POWER_SERVICE) as PowerManager
+//            val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
 //            screenWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG)
 //            screenWakeLock!!.acquire()
             policyManager.lockNow()
@@ -52,7 +52,7 @@ object Engine {
         } else {
             val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
-            activity.startActivityForResult(intent, ADMIN_RECEIVER_REQUEST_CODE)
+            (context as Activity).startActivityForResult(intent, ADMIN_RECEIVER_REQUEST_CODE)
         }
 
         return isSilenced
@@ -75,10 +75,10 @@ object Engine {
 //        isSilenced = false
 //    }
 
-    private fun mute(activity: Activity) {
+    private fun mute(context: Context) {
         log("mute")
 
-        val audioManager = activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 //        audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL)
 //        audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, 0, AudioManager.FLAG_SHOW_UI)
         if (audioManager.ringerMode != AudioManager.RINGER_MODE_SILENT) {
@@ -87,10 +87,10 @@ object Engine {
         audioManager.ringerMode = AudioManager.RINGER_MODE_SILENT
     }
 
-    private fun unmute(activity: Activity) {
+    private fun unmute(context: Context) {
         log("unmute")
 
-        val audioManager = activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioManager.ringerMode = ringerMode
     }
 }
