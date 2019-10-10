@@ -16,9 +16,9 @@ object Engine {
 
     private fun log(msg: String) = Log.d(TAG, msg)
 
-    var isScreenTurnedOn = true
+    var isSilenced = true
         set(value) {
-            log("isScreenTurnedOn: $field -> $value")
+            log("isSilenced: $field -> $value")
             field = value
         }
 
@@ -46,7 +46,7 @@ object Engine {
             screenWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG)
             screenWakeLock!!.acquire()
             policyManager.lockNow()
-            isScreenTurnedOn = false
+            isSilenced = false
         } else {
             val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
@@ -68,7 +68,7 @@ object Engine {
             addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
         }
 
-        isScreenTurnedOn = true
+        isSilenced = true
     }
 
     private fun mute(activity: Activity) {

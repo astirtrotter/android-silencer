@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (!Engine.isScreenTurnedOn) {
+        if (!Engine.isSilenced) {
             when (keyCode) {
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
                     keyPressState = keyPressState.or(KEYSTATE_VOLDN)
@@ -47,11 +47,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        return !Engine.isScreenTurnedOn || super.onKeyDown(keyCode, event)
+        return !Engine.isSilenced || super.onKeyDown(keyCode, event)
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (!Engine.isScreenTurnedOn) {
+        if (!Engine.isSilenced) {
             when (keyCode) {
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
                     keyPressState = keyPressState.and(KEYSTATE_VOLDN.inv())
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        return !Engine.isScreenTurnedOn || super.onKeyUp(keyCode, event)
+        return !Engine.isSilenced || super.onKeyUp(keyCode, event)
     }
 
     override fun onResume() {
