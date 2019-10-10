@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.util.Log
-import android.view.WindowManager
 
 object Engine {
     private val TAG = "SilencerEngine"
@@ -32,7 +31,7 @@ object Engine {
     }
 
     fun unsilence(activity: Activity) {
-        turnOnScreen(activity)
+//        turnOnScreen(activity)
         unmute(activity)
         activity.finish()
     }
@@ -59,22 +58,22 @@ object Engine {
         return isSilenced
     }
 
-    private fun turnOnScreen(activity: Activity) {
-        log("turnOn")
-
-//        if (screenWakeLock?.isHeld ?: false) {
-//            screenWakeLock!!.release()
-//            screenWakeLock = null
+//    private fun turnOnScreen(activity: Activity) {
+//        log("turnOn")
+//
+////        if (screenWakeLock?.isHeld ?: false) {
+////            screenWakeLock!!.release()
+////            screenWakeLock = null
+////        }
+//
+//        activity.window.apply {
+//            addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+//            addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+//            addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
 //        }
-
-        activity.window.apply {
-            addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
-            addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
-            addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
-        }
-
-        isSilenced = false
-    }
+//
+//        isSilenced = false
+//    }
 
     private fun mute(activity: Activity) {
         log("mute")
